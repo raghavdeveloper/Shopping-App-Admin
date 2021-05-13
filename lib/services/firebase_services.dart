@@ -7,6 +7,8 @@ class FirebaseServices {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   CollectionReference banners = FirebaseFirestore.instance.collection('slider');
   CollectionReference shops = FirebaseFirestore.instance.collection('shops');
+  CollectionReference category =
+      FirebaseFirestore.instance.collection('category');
   FirebaseStorage storage = FirebaseStorage.instance;
 
   Future<DocumentSnapshot> getAdminCredentials(id) {
@@ -14,6 +16,7 @@ class FirebaseServices {
     return result;
   }
 
+  //Banner
   Future<String> uploadBannerImageToDb(url) async {
     String downloadUrl = await storage.ref(url).getDownloadURL();
     if (downloadUrl != null) {
@@ -28,6 +31,19 @@ class FirebaseServices {
     firestore.collection('slider').doc(id).delete();
   }
 
+  //Category
+  Future<String> uploadCategoryImageToDb(url, catName) async {
+    String downloadUrl = await storage.ref(url).getDownloadURL();
+    if (downloadUrl != null) {
+      category.doc(catName).set({
+        'image': downloadUrl,
+        'name': catName,
+      });
+    }
+    return downloadUrl;
+  }
+
+  //Shopper
   updateShopAccStatus({id, status}) async {
     shops.doc(id).update({'accVerified': status ? false : true});
   }
