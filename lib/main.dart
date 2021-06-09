@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:shopping_app_admin/screens/admin_users.dart';
 import 'package:shopping_app_admin/screens/category_screen.dart';
+import 'package:shopping_app_admin/screens/delivery_boy_screen.dart';
 import 'package:shopping_app_admin/screens/login_screen.dart';
 import 'package:shopping_app_admin/screens/manage_banners.dart';
 import 'package:shopping_app_admin/screens/notification_screen.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         AdminUsers.id: (context) => AdminUsers(),
         SettingScreen.id: (context) => SettingScreen(),
         ShopScreen.id: (context) => ShopScreen(),
+        DeliveryBoyScreen.id: (context) => DeliveryBoyScreen(),
       },
     );
   }

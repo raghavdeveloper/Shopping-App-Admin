@@ -1,12 +1,16 @@
 //@dart=2.9
-import 'package:cloud_firestore/cloud_firestore.dart';
+
+import 'package:ars_progress_dialog/ars_progress_dialog.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class FirebaseServices {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   CollectionReference banners = FirebaseFirestore.instance.collection('slider');
   CollectionReference shops = FirebaseFirestore.instance.collection('shops');
+  CollectionReference boys = FirebaseFirestore.instance.collection('boys');
   CollectionReference category =
       FirebaseFirestore.instance.collection('category');
   FirebaseStorage storage = FirebaseStorage.instance;
@@ -111,5 +115,51 @@ class FirebaseServices {
         );
       },
     );
+  }
+
+  Future<void> saveDeliveryBoys(email, password) async {
+    boys.doc(email).set({
+      'accVerified': false,
+      'address': '',
+      'email': email,
+      'imageUrl': '',
+      'location': GeoPoint(0, 0),
+      'mobile': '',
+      'name': '',
+      'password': password,
+      'uid': ''
+    });
+  }
+
+  //update delivery boy approved status
+
+  updateBoyStatus({id, context, status}) {
+    ArsProgressDialog progressDialog = ArsProgressDialog(context,
+        blur: 2,
+        backgroundColor: Color(0xFF84c225).withOpacity(.3),
+        animationDuration: Duration(milliseconds: 500));
+    progressDialog.show();
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection('boys').doc(id);
+    return FirebaseFirestore.instance.runTransaction((transaction) async {
+      DocumentSnapshot snapshot = await transaction.get(documentReference);
+
+      if (!snapshot.exists) {
+        throw Exception('User does not exists!');
+      }
+
+      transaction.update(documentReference, {'accVerified': status});
+    }).then((value) {
+      progressDialog.dismiss();
+      showMyDialog(
+          title: 'Delivery Boy Status',
+          message: status == true
+              ? 'Delivery boy approved status updated as Approved'
+              : 'Delivery boy approved status updated as Not Approved',
+          context: context);
+    }).catchError((error) => showMyDialog(
+        title: 'Delivery Boy Status',
+        message: 'Failed to update delivery boy status $error',
+        context: context));
   }
 }

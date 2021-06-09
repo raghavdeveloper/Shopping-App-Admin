@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
 import 'package:shopping_app_admin/screens/admin_users.dart';
 import 'package:shopping_app_admin/screens/category_screen.dart';
+import 'package:shopping_app_admin/screens/delivery_boy_screen.dart';
 import 'package:shopping_app_admin/screens/home_screen.dart';
 import 'package:shopping_app_admin/screens/login_screen.dart';
 import 'package:shopping_app_admin/screens/manage_banners.dart';
@@ -32,6 +33,11 @@ class SideBarWidget {
           title: 'Shops',
           route: ShopScreen.id,
           icon: CupertinoIcons.group_solid,
+        ),
+        MenuItem(
+          title: 'Delivery Boy',
+          route: DeliveryBoyScreen.id,
+          icon: Icons.delivery_dining,
         ),
         MenuItem(
           title: 'Categories',
